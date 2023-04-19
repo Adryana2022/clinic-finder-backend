@@ -7,7 +7,7 @@ RUN npm install express-validator
 RUN npm install bcrypt
 RUN npm install body-parser
 RUN npm install pg
-RUN npm install express-validator
+RUN npm install express-validator --save
 RUN npm install cookie-parser
 RUN npm install jsonwebtoken
 CMD ["npm", "start"]
