@@ -7,7 +7,7 @@ const segredo = process.env.JWT_SECRET
 
 
 const paginaInicial = (req, res) => {
-    res.status(200).send('funcionando');
+    res.status(200).json({msg:"está funcionando"});
 }
 const cadastrar = async (req, res) => {
     const errors = validationResult(req);
