@@ -10,7 +10,6 @@ const users = require('./models/users')
 
 const app = express();
 app.use(bodyParser.json())
-app.use(cookieParser)
 app.use(router)
 
 
