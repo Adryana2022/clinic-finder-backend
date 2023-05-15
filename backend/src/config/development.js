@@ -1,5 +1,5 @@
 require('dotenv').config()
-const port = process.env.PORT?process.env.PORT : 3333
+const port = process.env.PORT?process.env.PORT : 5000
 module.exports ={
     porta:{
         port:port
