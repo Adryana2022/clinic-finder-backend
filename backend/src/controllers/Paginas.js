@@ -119,7 +119,12 @@ function verificarToken(req, res, next){
         console.log(error)
         return res.status(401).json({error})
     }
+
 }
+
+    function Busca(req,res){
+
+    }
 
 module.exports = {
     paginaInicial,
@@ -127,5 +132,6 @@ module.exports = {
     verificacaoCadastro,
     login,
     verificarToken,
-    logado
+    logado,
+    Busca
 }
