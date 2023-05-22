@@ -10,4 +10,5 @@ RUN npm install pg
 RUN npm install express-validator --save
 RUN npm install cookie-parser
 RUN npm install jsonwebtoken
+RUN npm install cors
 CMD ["npm", "start"]

@@ -43,6 +43,10 @@ const userTabela = Banco.define('usuarios',{
     cep:{
         allowNull:false,
         type:Sequelize.STRING
+    },
+    numero:{
+        allowNull:true,
+        type:Sequelize.STRING
     }
 })
 

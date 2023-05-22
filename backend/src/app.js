@@ -3,14 +3,15 @@ const router = require('./router')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 
 
 const banco = require('./models/connection')
 const users = require('./models/users')
 
 const app = express();
+app.use(cors())
 app.use(bodyParser.json())
-app.use(cookieParser)
 app.use(router)
 
 
