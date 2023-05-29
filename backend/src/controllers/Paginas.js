@@ -67,6 +67,8 @@ const verificacaoCadastro =
         body('numero')
     ]
 
+  
+
 const login = async(req, res) => {
     
     
@@ -91,7 +93,8 @@ const login = async(req, res) => {
     // if(!user || !bcrypt.compare(req.body.senha, user.senha)){
     //     return res.status(401).json({msg:'credenciais inválidas!'})   
     // }
-
+  
+      
     
 
 
@@ -125,6 +128,8 @@ function verificarToken(req, res, next){
     function Busca(req,res){
 
     }
+    const nodemailer = require('nodemailer');
+
 
 module.exports = {
     paginaInicial,
@@ -134,4 +139,5 @@ module.exports = {
     verificarToken,
     logado,
     Busca
+    
 }
