@@ -8,6 +8,7 @@ const cors = require('cors')
 
 const banco = require('./models/connection')
 const users = require('./models/users')
+const clinicas = require('./models/clinicas')
 
 const app = express();
 app.use(cors())

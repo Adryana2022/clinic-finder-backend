@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const userTabela = require('../models/users')
 const jwt = require('jsonwebtoken')
 const segredo = process.env.JWT_SECRET
+const clinicaTabela = require('../models/clinicas');
+
 
 
 
@@ -125,10 +127,85 @@ function verificarToken(req, res, next){
 
 }
 
-    function Busca(req,res){
+    function busca(req,res){
 
     }
     const nodemailer = require('nodemailer');
+
+    const recuperar=async(req, res) =>{
+      
+        console.log(req.body.email)
+        try{
+            const user = await userTabela.findOne({where:{email:req.body.email}})
+           
+            if (user){
+                res.status(200).json({msg:'Link de redefinição de senha enviado com sucesso'})
+            }else{
+                res.json({msg: 'Email não encontrado'})
+            }
+        }
+        catch(erro){
+      console.log(erro)
+        }
+    }
+
+    
+    const cadastrarClinica = async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() }), console.log(errors);
+      }
+    
+      let conta = await clinicaTabela.findOne({ where: { email: req.body.email } });
+      if (conta === null) {
+        conta = await clinicaTabela.findOne({ where: { cnpj: req.body.cnpj } });
+        if (conta === null) {
+          res.status(200);
+        } else {
+          return res
+            .status(500)
+            .json('Erro ao tentar criar o cadastro: CNPJ já existente no sistema. Entre em contato com o suporte!');
+        }
+      } else {
+        return res
+          .status(500)
+          .json('Erro ao tentar criar o cadastro: E-mail já existente no sistema. Entre em contato com o suporte!');
+      }
+    
+      try {
+        const senhaCript = await bcrypt.hash(req.body.senha, 10);
+        await clinicaTabela.create({
+          nome: req.body.nome,
+          email: req.body.email,
+          telefone: req.body.telefone,
+          cnpj: req.body.cnpj,
+          cep: req.body.cep,
+          rua: req.body.rua,
+          bairro: req.body.bairro,
+          estado: req.body.estado,
+          crm: req.body.crm,
+          situacao: req.body.situacao,
+        });
+        return res.status(200).json({ msg: 'Clínica cadastrada com sucesso!' });
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Erro ao cadastrar a clínica' });
+      }
+    };
+    
+    const verificacaoCadastroClinica = [
+      body('nome').notEmpty().isAlpha('pt-BR', { ignore: " " }).withMessage('O nome não pode conter números ou símbolos!'),
+      body('email').notEmpty().isEmail().withMessage('O e-mail deve ser válido!'),
+      body('telefone').notEmpty().withMessage('O campo telefone não pode estar vazio!'),
+      body('cnpj').notEmpty().isLength({ min: 14, max: 14 }).withMessage('O CNPJ deve conter 14 dígitos!'),
+      body('cep').notEmpty().isLength({ min: 8 }).withMessage('O CEP deve conter 8 dígitos!'),
+      body('rua').notEmpty().withMessage('O campo rua não pode estar vazio!'),
+      body('bairro').notEmpty().withMessage('O campo bairro não pode estar vazio!'),
+      body('estado').notEmpty().withMessage('O campo estado não pode estar vazio!'),
+      body('crm').notEmpty().withMessage('O campo CRM não pode estar vazio!'),
+      body('situacao').notEmpty().withMessage('O campo situação cadastral não pode estar vazio!'),
+    ];
+ 
 
 
 module.exports = {
@@ -138,6 +215,9 @@ module.exports = {
     login,
     verificarToken,
     logado,
-    Busca
-    
+    busca,
+    recuperar,
+    cadastrarClinica,
+    verificacaoCadastroClinica
+  
 }
